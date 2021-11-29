@@ -1,5 +1,6 @@
 selenium
 webdriver-manager
+utc-simple-log
 #pyautogui
 #pywinauto
 #pyinstaller
