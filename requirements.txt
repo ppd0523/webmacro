@@ -2,4 +2,4 @@ selenium
 webdriver-manager
 #pyautogui
 #pywinauto
-#pybuilder
+#pyinstaller
