@@ -1,3 +1,11 @@
+import os, sys
+if getattr(sys, 'frozen', False):
+    _path = sys.executable
+else:
+    _path = __file__
+
+os.chdir(os.path.dirname(os.path.abspath(_path)))
+
 import tkinter as tk
 import threading
 import glob

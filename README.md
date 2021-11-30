@@ -16,11 +16,11 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## Build Executor
-This step confirmed only Windows
+## Build Executable
+This step confirmed Windows(10, 11), Mac OSX(15.0)
 ```shell
 pip install pyinstaller
-pyinstaller --onefile --noconsole main.py
+pyinstaller main.py --onefile --noconsole
 ```
 
 ## Running with Chrome extension
