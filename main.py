@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os, sys
 if getattr(sys, 'frozen', False):
     _path = sys.executable
@@ -22,9 +24,10 @@ from selenium.webdriver.support import expected_conditions as ec
 
 log = SimpleLogger()
 driver = None
+is_running = False
 
 
-def open_browser():
+def open_browser(_btn):
     def task():
         global driver
         try:
@@ -34,6 +37,8 @@ def open_browser():
         except AttributeError as e:
             if driver:
                 return
+        except WebDriverException as e:
+            pass
 
         opt = webdriver.ChromeOptions()
         files = glob.glob('./extensions/*')
@@ -47,9 +52,14 @@ def open_browser():
     threading.Thread(target=task).start()
 
 
-def on_text():
+def on_start():
     global driver
-    log.info(driver.title)
+    log.info('click start')
+
+
+def on_stop():
+    global driver
+    log.info('click stop')
 
 
 def on_destroy(_root):
@@ -64,20 +74,57 @@ def on_destroy(_root):
     _root.destroy()
 
 
+def ctrl_event(event):
+    if not (12 == event.state and event.keysym == 'c'):
+        return "break"
+
+
 if __name__ == "__main__":
+    # General Color
+    BEIGE_COLOR = '#FEF8E7'
+    BOLD_BEIGE_COLOR = '#ECE6CC'
+
+    # Root
     root = tk.Tk()
+    root.configure(bg='#fef8e7')
     root.title("Web Controller")
-    root.geometry("480x320+100+100")
+    root.geometry("320x240+100+100")
     root.resizable(True, True)
 
-    frame = tk.Frame(root, relief="solid")
-    frame.pack(side="left", fill="both", expand=True)
+    # Top panel
+    panel_top = tk.PanedWindow(root, bg=BEIGE_COLOR)
+    panel_top.place(relx=0.5, y=30, anchor=tk.N)
 
-    button1 = tk.Button(frame, text='Open\nChrome', width=5, height=5, command=open_browser)
-    button1.pack(side='left')
+    # Button
+    btn_opt = {
+        'relief': 'groove',
+        'width': 8,
+        'height': 3,
+        'bg': BEIGE_COLOR,
+        'activebackground': BOLD_BEIGE_COLOR,
+        'font': 25,
+    }
 
-    button2 = tk.Button(frame, text='btn', width=5, height=5, command=on_text)
-    button2.pack(side='left')
+    open_btn = tk.Button(panel_top, text='OPEN', **btn_opt)
+    open_btn.config(command=partial(open_browser, open_btn))
+    start_btn = tk.Button(panel_top, text='START', command=on_start, **btn_opt)
+    stop_btn = tk.Button(panel_top, text='STOP', command=on_stop, **btn_opt)
+
+    panel_top.add(open_btn, padx=5)
+    panel_top.add(start_btn, padx=5)
+    panel_top.add(stop_btn, padx=5)
+    # open_btn.pack(side=tk.LEFT, padx=(5, 20))
+    # start_btn.pack(side=tk.LEFT, padx=5)
+    # stop_btn.pack(side=tk.LEFT, padx=5)
+
+    # panel_bottom = tk.PanedWindow(root, bg=BEIGE_COLOR)
+    # panel_bottom.pack(side='top', pady=20, fill='both', padx=20, expand=True)
+    #
+    # text_area = tk.Text(panel_bottom)
+    #
+    # text_area.insert(tk.END, 'hello world')
+    # text_area.bind("<Key>", lambda e: ctrl_event(e))
+    # panel_bottom.add(text_area)
 
     root.protocol("WM_DELETE_WINDOW", partial(on_destroy, root))
     root.mainloop()
