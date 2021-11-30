@@ -2,13 +2,13 @@
 Web macro template
 
 ## Environment
-* python 3.9
-* selenium 4.1
-* chrome 96
+* Python 3.9
+* Selenium 4.1
+* Chrome 96
 
 ## Quick start
 ```shell
-git clone ...
+git clone https://github.com/ppd0523/webmacro
 cd webmacro
 python -m venv venv
 pip install -r requirements.txt
