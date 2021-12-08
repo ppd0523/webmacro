@@ -29,7 +29,7 @@ Creating the `extensions/`, place the `*.crx` as shown below
 webmacro
 ├── README.md
 ├── extensions
-│   └── metamask_10_6_4_0.crx
+│   └── metamask_10_6_4_0.crx  # for example
 ├── main.py
 ├── requirements.txt
 ├── tester.ipynb

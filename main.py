@@ -21,9 +21,8 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
 log = SimpleLogger()
-service = Service(ChromeDriverManager().install())
 driver = None
-init_url = 'https://www.google.co.kr'
+
 
 def open_browser():
     def task():
@@ -40,7 +39,9 @@ def open_browser():
         files = glob.glob('./extensions/*')
         [opt.add_extension(file) for file in files if file.endswith('.crx')]
 
+        service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=opt)
+        init_url = 'https://www.google.co.kr'
         driver.get(url=init_url)
 
     threading.Thread(target=task).start()
